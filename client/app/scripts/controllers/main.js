@@ -112,7 +112,7 @@ angular.module('nethCheckInApp')
             var pdf = new jsPDF({
                 orientation: 'l',
                 unit: 'mm',
-                format: [62, 62]
+                format: [62, 50]
             })
 
             var pages = 2
@@ -125,7 +125,7 @@ angular.module('nethCheckInApp')
                 pdf.setFont('Changa', 'normal');
 
                 var fromLeft = 3;
-                var fromTop = 30; // testo parte sotto il QR
+                var fromTop = 24; // testo parte sotto il QR
 
                 var textAttendeeCode = String(attendeeCode)
                 let q = qrcode(0, 'H');
@@ -137,7 +137,7 @@ angular.module('nethCheckInApp')
 
                 const qrSize = 24;
                 const qrX = 2; // QR in alto a sinistra
-                const qrY = 4;
+                const qrY = 0;
 
                 pdf.addImage(imgSrc, 'PNG', qrX, qrY, qrSize, qrSize);
 
@@ -155,9 +155,21 @@ angular.module('nethCheckInApp')
                 pdf.text(textAgency, fromLeft, 18 + fromTop);
 
                 pdf.setFontSize(11);
-                pdf.text(location, fromLeft, 22 + fromTop);
+                // posizione della location accanto al QR
+                const locationX = qrX + qrSize + 3; // un po' di margine dopo il QR
+                const locationY = qrY + 6; // leggermente sotto l'inizio del QR
 
-                if (isProspect) pdf.line(fromLeft-1, 29, agency.length * 4, 29);
+                pdf.text(location, locationX, locationY);
+
+                if (isProspect) {
+                        const lineY = 19 + fromTop; 
+                        const lineLength = textAgency.length * 2.8; 
+                        pdf.setDrawColor(0);
+                        pdf.setLineWidth(0.5);
+                        pdf.line(fromLeft, lineY, fromLeft + lineLength, lineY);
+                }      
+                
+                    //pdf.line(fromLeft-1, 29, agency.length * 4, 29);
             }
 
             pdf.autoPrint();
@@ -219,8 +231,9 @@ angular.module('nethCheckInApp')
                     let serverRes = successData.data.message;
                     let code = serverRes.codice;
                     let room = serverRes.sala;
+                    let type = serverRes.tipo;
                     $scope.newUser = false;
-                    printPDF(newname, newsurname, newagency, '', room, code)
+                    printPDF(newname, newsurname, newagency, type, room, code)
                 }, function(errorData) {
                     $scope.save = false;
                     return;

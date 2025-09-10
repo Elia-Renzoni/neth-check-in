@@ -74,7 +74,7 @@ function City() {
             connection.acquire(function(err, con) {   
                 let toForward = {};          
                 // fetch attendee
-                con.query('SELECT cod_partecipante, sala FROM iscritti WHERE nome = "' + name + '" AND cognome = "' + surname + '" AND agency = "' + agency + '"', function(err, result) {
+                con.query('SELECT cod_partecipante, sala, tipo FROM iscritti WHERE nome = "' + name + '" AND cognome = "' + surname + '" AND agency = "' + agency + '"', function(err, result) {
                     if (err) {
                         skip = true;
                         res.status(500).json({
@@ -83,7 +83,8 @@ function City() {
                     } else {
                         toForward = {
                             codice: result[0].cod_partecipante,
-                            sala:   result[0].sala
+                            sala:   result[0].sala,
+                            tipo:   result[0].tipo
                         };
                     }
                 }) 
