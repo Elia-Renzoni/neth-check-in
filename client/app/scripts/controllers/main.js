@@ -316,11 +316,3 @@ angular.module('nethCheckInApp')
         });
 
     });
-
-
-function setPDFLayout(wDim, hDim) {
-    pdfLayout = {
-        w: wDim,
-        h: hDim
-    }
-}
