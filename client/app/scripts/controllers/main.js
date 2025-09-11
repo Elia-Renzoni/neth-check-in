@@ -125,18 +125,18 @@ angular.module('nethCheckInApp')
                 pdf.setFont('Changa', 'normal');
 
                 var fromLeft = 3;
-                var fromTop = 24; // testo parte sotto il QR
+                var fromTop = 24; 
 
                 var textAttendeeCode = String(attendeeCode)
                 let q = qrcode(0, 'H');
                 q.addData(textAttendeeCode);
                 q.make();
 
-                const imgTag = q.createImgTag(6); // 4 = scale
+                const imgTag = q.createImgTag(6); 
                 const imgSrc = imgTag.match(/src="(.*?)"/)[1]; // extract base64
 
                 const qrSize = 24;
-                const qrX = 2; // QR in alto a sinistra
+                const qrX = 2; 
                 const qrY = 0;
 
                 pdf.addImage(imgSrc, 'PNG', qrX, qrY, qrSize, qrSize);
@@ -155,9 +155,9 @@ angular.module('nethCheckInApp')
                 pdf.text(textAgency, fromLeft, 18 + fromTop);
 
                 pdf.setFontSize(11);
-                // posizione della location accanto al QR
-                const locationX = qrX + qrSize + 3; // un po' di margine dopo il QR
-                const locationY = qrY + 6; // leggermente sotto l'inizio del QR
+
+                const locationX = qrX + qrSize + 3; 
+                const locationY = qrY + 6; 
 
                 pdf.text(location, locationX, locationY);
 
@@ -169,7 +169,6 @@ angular.module('nethCheckInApp')
                         pdf.line(fromLeft, lineY, fromLeft + lineLength, lineY);
                 }      
                 
-                    //pdf.line(fromLeft-1, 29, agency.length * 4, 29);
             }
 
             pdf.autoPrint();
